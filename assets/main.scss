@@ -1,0 +1,19 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@font-face {
+    font-family: 'Menlo';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Menlo Regular'), url('/assets/Menlo-Regular.ttf') format('woff');
+}
+  
+@font-face {
+    font-family: 'Menlo';
+    font-style: normal;
+    font-weight: bold;
+    src: local('Menlo Bold'), url('/assets/Menlo-Bold.ttf') format('woff');
+}
+
+@import "minima";
+@import "syntax-highlighting/customized.css";
