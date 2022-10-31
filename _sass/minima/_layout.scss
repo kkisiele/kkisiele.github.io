@@ -5,7 +5,7 @@
   border-top: 5px solid $grey-color-dark;
   border-bottom: 1px solid $grey-color-light;
   min-height: $spacing-unit * 1.865;
-
+  background-color: darken($background-color, 2%);
   // Positioning context for the mobile navigation icon
   position: relative;
 }
@@ -122,7 +122,7 @@
 }
 
 .footer-col-wrapper {
-  @include relative-font-size(0.9375);
+  @include relative-font-size(0.9);
   color: $grey-color;
   margin-left: -$spacing-unit / 2;
   @extend %clearfix;
@@ -203,8 +203,12 @@
 }
 
 .post-link {
-  display: block;
   @include relative-font-size(1.5);
+  font-weight: normal;
+}
+
+.post-link a {
+  display: block;
 }
 
 
@@ -217,8 +221,8 @@
 }
 
 .post-title {
-  @include relative-font-size(2.9);
-  font-weight: bold;
+  @include relative-font-size(2.6);
+  font-weight: normal;
   letter-spacing: -1px;
   line-height: 1;
 
@@ -231,7 +235,7 @@
   margin-bottom: $spacing-unit;
 
   h2 {
-    @include relative-font-size(2);
+    @include relative-font-size(1.9);
 
     @include media-query($on-laptop) {
       @include relative-font-size(1.75);
