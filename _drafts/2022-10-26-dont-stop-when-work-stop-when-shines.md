@@ -1,19 +1,18 @@
 ---
 layout: post
-title:  "Don't stop when work, stop when shines"
+title:  "Don't stop when works, stop when shines"
 date:   2022-10-26 16:00:00 +0200
 ---
 
-How often did you finish your code without giving it a try to polish into ?
-The post is a hands-on guide showing  
+How often do you finish with working source code without giving it a try to polish? By pushing too early you might miss the opportunity to create an extraordinary piece of code you will be proud of. In the post, I am presenting a hands-on example of refactoring turning ordinary, everyone-could-write code into maintenance-oriented, very high-quality work.
 
-## Genesis
-John is assigned a task to implement a new functionality in the legacy stock trading platform.
+## The Story Begins
+John is assigned the task to implement new functionality in the legacy stock trading platform.
 The product owner requests the following
 > As a user, I can see the average (weighted) price of the stocks from my portfolio, so I know how the buy price relates to the market price.
 
 He is an experienced programmer, so the task was straightforward and took less time than expected.
-The main domain piece of finished code looks as follow:
+The main domain piece of the finished code looks as follows:
 {% highlight java %}
 public Map<StockSymbol, BigDecimal> weightedAverage(List<UserStockTransaction> stocks) {
     Map<StockSymbol, List<UserStockTransaction>> stocksBySymbol = new HashMap<>();
@@ -37,14 +36,16 @@ public Map<StockSymbol, BigDecimal> weightedAverage(List<UserStockTransaction> s
 John fills in the pull request. He is ready to click the submit button, but some noise outside the window distracts him... it is
 just a horde of motorcyclists. While backing to the pull request, he notices the dusty "Clean Code" which serves as a monitor stand.
 
-Suddenly John remind himeself of all Uncle Bob's arguments about software craftsmanship, professionalism and the alike nonsenses.
-Hmmm... no need to hurry with the pull requsts.. the reviewers are in the distant time zone, will be at work in the couple of hours.
-
-You decide to polish it a bit.
+Suddenly John reminds himself of all Uncle Bob's arguments about software craftsmanship, professionalism and the like nonsense.
+He experiences conscience pangs. The reviewers are in a distant time zone and will be at work in a couple of hours. So there is no need to hurry up. He decides to polish it a bit.
 
 ## Course of Action
-Before starting you give it some thought.
-Realize that weightedAverage method is very low-level and full of details. You would like something closer to the natural language so ideally even your always-busy scrum master could understand. The vision born and doesn't take into account the Java's clunky syntax:
+He reviews the code and gives it some thought.
+The method name says _what_ it is doing. It returns a weighted average for provided `UserStockTransaction` items.
+What he wonders is whether some of his colleagues will grasp his intentions of _how_ the mehod is fulfilling its duties? At least without spending a minute or two.
+
+Realizes the method content is very low-level and full of implementation details. It is not instantly clear _how_ it is working.
+John would like something closer to the natural language thus even his always-busy scrum master could understand. The goal (despite Java's clunky syntax) is to have the code as similar to the following as possible:
 {% highlight java %}
 public Map<StockSymbol, BigDecimal> weightedAverage(List<UserStockTransaction> stocks) {
     // groups UserStock by StockSymbol
@@ -52,13 +53,9 @@ public Map<StockSymbol, BigDecimal> weightedAverage(List<UserStockTransaction> s
     // returns weighted average per StockSymbol
 }
 {% endhighlight %}
-A messenger notification pops up. It is a new programmer you onboarded a couple of days ago. He was assigned his first serious task and wants to know how you manage with your? It turn out the fellow's task is similar to your in some parts. He will need to perform the same calculation (weighted average), but in the bond module. You are in the flow and don't like being interrupted, so reply that let him know when done. In the meantime you set the messenger status to "Do Not Disturb".
+A messenger notification pops up. It is Kevin, a new programmer he onboarded a couple of days ago. Kevin was assigned first serious task and wants to know how John manage with his? It turns out the fellow's gig is similar in some parts. It needs to perform the same calculation (weighted average) in the bond module. John don't like being interrupted when in the _flow state_, so reply that let him know when be done. In the meantime, he sets the messenger status to "Do Not Disturb".
 
-You think for a second... you have read dozen times about Don't Repeat Principle and know that code copy is not an option, at least in this case.  It needs to be reused.
-
-Below is a summary of what you have established.
-* Easy to understand code.
-* Reusable calculation.
+He thinks for a second... have read dozen times about _Don't Repeat Principle_ and knows that code copy is not an option, at least in this case. He will need to extract the weighted average calculation and make it generic.
 
 ## Declarative Approach
 You start with something simple and move the inner guts of the `for` loop into dedicated method.
