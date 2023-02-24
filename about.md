@@ -5,7 +5,9 @@ permalink: /about/
 ---
 ![myself](/assets/myself.jpg)
 
-Seasoned software engineer.
+Seasoned software engineer...
+
+...at least numbers say so.
 
 Mostly Java.
 
