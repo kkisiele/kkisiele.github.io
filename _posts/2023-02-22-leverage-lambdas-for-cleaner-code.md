@@ -81,9 +81,9 @@ public void processMessage(InsuranceProduct product) throws Exception {
     retryOnSqlException(() -> upsert(product));
 }
 {% endhighlight %}
-The framework entry method, now shout out what it is doing. It's one-line long, so there is no cognitive load.
+The framework entry method now clearly states what it is doing. It is only one line long, so there is no cognitive load.
 
-And the supporting code contains details how fullfills its duty and enables reusability:
+The supporting code contains details on how it fulfills its duty and enables reusability:
 {% highlight java %}
 private void retryOnSqlException(SqlRunnable handle) throws SQLException {
     for (int retry = 0; retry <= MAX_RETRIES; retry++) {
