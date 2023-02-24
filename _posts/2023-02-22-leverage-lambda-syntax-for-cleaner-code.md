@@ -3,7 +3,6 @@ layout: post
 title:  "Leverage Lambda Syntax for Cleaner Code"
 date:   2023-02-22 20:052:00 +0200
 ---
-
 ## Once upon a time in a production code
 When I was working on code persisting some domain data, I ended up with the following:
 {% highlight java %}
@@ -103,5 +102,7 @@ interface SqlRunnable {
 }
 {% endhighlight %}
 ## Conclusion
-The `processMessage` method now expresses its intent much better by utilizing a declarative approach and high-level code. Details regarding the retry logic are placed in its own method, which, thanks to good naming, precisely describes its purpose.
+Was it worth the effort? Definitely. Let's recap the benefits. 
+
+The `processMessage` method now expresses the intent much clearly by utilizing a declarative approach with a high-level code. Details regarding the retry logic are placed in its own method, which, thanks to good naming, precisely describes the method's purpose.
 The lambda syntax separates the retry logic and database operation and enables the reuse of the retry feature.
