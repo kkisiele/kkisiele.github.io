@@ -3,6 +3,9 @@ layout: post
 title:  "Leverage Lambdas for Cleaner Code"
 date:   2023-02-22 20:052:00 +0200
 ---
+
+The post demonstrates a real-life example of Java refactoring aimed at achieving cleaner code and better separation of concerns. The idea originated from my experience with coding in a professional setting.
+
 ## Once upon a time in a production code
 When I was working on code persisting some domain data, I ended up with the following:
 {% highlight java %}
