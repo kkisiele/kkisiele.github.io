@@ -26,27 +26,25 @@ private void upsert(InsuranceProduct product) throws SQLException {
 }
 
 {% endhighlight %}
-The `processMessage` is part of a framework contract and is called for every processed message to be persisted.
-The code performs an idempotent database upsert and handles retry logic in case of errors. The main error I worried about was a timed-out JDBC connection, which needs to be re-established.
+The `processMessage` is a part of a framework contract and is called to persist every processed message.
+The code performs an idempotent database upsert and handles retry logic in case of errors. The main error I was concerned about was a timed-out JDBC connection that needs to be re-established.
 
-Somehow, I didn't like the initial version from a clean code perspective. I expected something that would give **instant clarity** of its intent without the need to dive into the code itself. The `processMessage` is full of low level details and one needs to understand them to know what it's about. Also, wanted to separate the retry logic from the retried database operation to make the retry logic easy to reuse.
+I wasn't satisfied with the initial version of `processMessage` from a clean code perspective. I expected something that would instantly reveal its intent without the need to dive into the code. The method is full of low-level details that need to be understood to know what it does. Additionally, I wanted to separate the retry logic from the database operation being retried to make it easy to reuse.
 
 Decided to rewrite it to address the mentioned issues.
 ## Less procedural, more declarative
-The first step is to move `updateDatabase()` call to lambda powered variable. 
-Let the IDE help with that by using _Introduce Functional Variable_. Unfortunatelly, we get
+The first step is to move the `updateDatabase()` call to a lambda-powered variable.
+Let the IDE help with that by using _Introduce Functional Variable_ refactoring. Unfortunately, we get an error message:
 > No applicable functional interfaces found
 
-The reason for that is lack of functional interface which provides SAM interface compatible with upsert method. It should declare single abstract method, which accepts no parameters, returns nothing and throws `SQLException`.
-
-We need to provide it by ourselves:
+The reason for this is the absence of a functional interface that provides a SAM interface compatible with the upsert method. To address this issue, we need to define a custom functional interface that declares a single abstract method accepting no parameters, returning nothing, and throwing `SQLException`. Here's the interface we need to provide:
 {% highlight java %}
 @FunctionalInterface
 interface SqlRunnable {
     void run() throws SQLException;
 }
 {% endhighlight %}
-The custom functional interface is in place, so let's repeat the refactoring. Now succeeds. Also, move the variable assignment before the _for_ loop.
+With the custom functional interface in place, let's repeat the refactoring. This time, it succeeds. Also, let's move the variable assignment before the _for_ loop:
 {% highlight java %}
 public void processMessage(InsuranceProduct product) throws Exception {
     final SqlRunnable handle = () -> upsert(product);
@@ -64,7 +62,7 @@ public void processMessage(InsuranceProduct product) throws Exception {
     }
 }
 {% endhighlight %}
-Use _Extract Method_ refactoring to move the _for_ loop and its content to a new method named `retryOnSqlException`:
+Use the _Extract Method_ refactoring to move the _for_ loop and its content to a new method named `retryOnSqlException`:
 {% highlight java %}
 public void processMessage(InsuranceProduct product) throws Exception {
     final SqlRunnable handle = () -> upsert(product);
@@ -74,9 +72,9 @@ private void retryOnSqlException(SqlRunnable handle) throws SQLException {
     //skipped for clarity
 }
 {% endhighlight %}
-The last step is to use _Inline Variable_ to inline the `handle` variable.
+The last step is to use the _Inline Variable_ refactoring to inline the `handle` variable.
 
-The final result looks as follow:
+The final result looks as follows:
 {% highlight java %}
 public void processMessage(InsuranceProduct product) throws Exception {
     retryOnSqlException(() -> upsert(product));
@@ -103,7 +101,6 @@ interface SqlRunnable {
 }
 {% endhighlight %}
 ## Conclusion
-Was it worth the effort? Definitely. Let's recap the benefits. 
+Was it worth the effort? Absolutely. Let's summarize the benefits. 
 
-The `processMessage` method now expresses the intent much clearly by utilizing a declarative approach with a high-level code. Details regarding the retry logic are placed in its own method, which, thanks to good naming, precisely describes the method's purpose.
-The lambda syntax separates the retry logic and database operation and enables the reuse of the retry feature.
+The `processMessage` method now clearly expresses its intent by utilizing a declarative approach with high-level code. The retry logic is separated from the database operation and placed in its own method, which, thanks to good naming, precisely reveals its intent. Furthermore, the lambda syntax allows for easy reuse of the retry feature with other database operations in future.
