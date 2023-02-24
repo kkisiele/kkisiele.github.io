@@ -68,18 +68,23 @@ public void processMessage(InsuranceProduct product) throws Exception {
     final SqlRunnable handle = () -> upsert(product);
     retryOnSqlException(handle);
 }
+
 private void retryOnSqlException(SqlRunnable handle) throws SQLException {
     //skipped for clarity
 }
 {% endhighlight %}
 The last step is to use the _Inline Variable_ refactoring to inline the `handle` variable.
 
-The final result looks as follows:
+The final result is below.
 {% highlight java %}
 public void processMessage(InsuranceProduct product) throws Exception {
     retryOnSqlException(() -> upsert(product));
 }
+{% endhighlight %}
+The framework entry method, now shout out what it is doing. It's one-line long, so there is no cognitive load.
 
+And the supporting code contains details how fullfills its duty and enables reusability:
+{% highlight java %}
 private void retryOnSqlException(SqlRunnable handle) throws SQLException {
     for (int retry = 0; retry <= MAX_RETRIES; retry++) {
         try {
@@ -103,4 +108,4 @@ interface SqlRunnable {
 ## Conclusion
 Was it worth the effort? Absolutely. Let's summarize the benefits. 
 
-The `processMessage` method now clearly expresses its intent by utilizing a declarative approach with high-level code. The retry logic is separated from the database operation and placed in its own method, which, thanks to good naming, precisely reveals its intent. Furthermore, the lambda syntax allows for easy reuse of the retry feature with other database operations in future.
+The `processMessage` method now clearly expresses its intent by utilizing a declarative approach with high-level code. The retry logic is separated from the database operation and placed in its own method, which, thanks to good naming, precisely reveals its intent. Furthermore, the lambda syntax allows for easy reuse of the retry feature with other database operations.
