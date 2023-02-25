@@ -9,9 +9,7 @@ Seasoned software engineer...
 
 ...at least numbers say so.
 
-Mostly Java.
-
-Enjoy Kotlin.
+Mostly Java, but &hearts; Kotlin.
 
 Clean code advocate.
 
