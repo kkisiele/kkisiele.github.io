@@ -4,10 +4,6 @@ html {
     font-family: sans-serif;
   }
   
-  body {
-    margin: 0;
-  }
-  
   article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
     display: block;
   }
@@ -27,7 +23,9 @@ html {
   }
   
   a {
-    background-color: rgba(0, 0, 0, 0);
+    color:var(--primary-text);
+    background-color: transparent;
+    text-decoration: underline;
   }
   
   a:active, a:hover {
@@ -220,13 +218,13 @@ html {
   }
   
   body {
-    color: #333;
-    background-color: #fff;
     min-height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
+    background-color: var(--background);
+    color: var(--primary-text);
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
   }
   
   img {
@@ -2173,13 +2171,6 @@ html {
     padding-bottom: 0;
   }
   
-  .body {
-    background-color: var(--background);
-    color: var(--primary-text);
-    font-family: Inter, sans-serif;
-    font-size: 16px;
-    line-height: 1.5em;
-  }
   
   .blog-header {
     grid-column-gap: 0px;
