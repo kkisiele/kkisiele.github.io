@@ -2,4 +2,34 @@
 layout: default
 title: Home
 ---
-<h1>{{ "Hello World!" | downcase }}</h1>
+<section id="contact" class="section">
+    <div class="w-layout-blockcontainer container contact-container w-container">
+        <h1 class="heading">Contact me</h1>
+        <div>Whether you&#x27;re looking to streamline your business processes, develop a custom web application, or
+            just need some guidance on leveraging no-code platforms, I&#x27;m here to help. Feel free to reach out
+            with any questions or project inquiries.</div>
+        <div class="contact-form-wrapper w-form">
+            <form id="contact-form" name="wf-form-Conact-Form" data-name="Conact Form"
+                method="post" action="https://hook.eu2.make.com/sqwim6iqju3aw66etw36iqvzln8udnqq"
+                class="contact-form">
+                <input class="text-field w-input"
+                    maxlength="256" name="name" data-name="name" placeholder="Your name" type="text"
+                    id="name" />
+                <input class="text-field w-input" maxlength="256" name="email" data-name="email"
+                    placeholder="Email address the reply should be sent to" type="email" id="email"
+                    required="" />
+                <textarea id="message" name="message" maxlength="5000" data-name="message"
+                    placeholder="Your message" required="" class="text-area w-input"></textarea>
+                <input type="submit"
+                    data-wait="Sending" class="button w-button" value="Send" />
+            </form>
+            <div class="success-message w-form-done">
+                <div>Thank you!<br />I have received your message and will respond to your inquiry within the next
+                    few hours.</div>
+            </div>
+            <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+        </div>
+    </div>
+</section>

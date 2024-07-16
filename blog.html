@@ -1,0 +1,31 @@
+---
+layout: default
+title: Blog posts
+---
+<section class="section">
+    <div class="w-layout-blockcontainer container w-container">
+        <div class="blog-header">
+            <h1>{{ page.title }}</h1>
+            <div class="text-block-2">The insights about automation, web-app development</div>
+        </div>
+        <div class="w-layout-grid posts">
+            {% for post in site.posts %}
+            <div class="post-card card-outline">
+                <img
+                    src="https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/66941b143605b70a9d368107_Automating%20Crypto%20Sentiment%20Alerts%20with%20Make%20(Integromat)-small.jpg"
+                    loading="lazy" alt="" />
+                <div class="post-card-content">
+                    <div class="blog-post-header">
+                        <div class="text-block">Posted on <span class="post-date">{{ post.date | date: "%B %-d, %Y" }}</span> in <span
+                                class="tag">{{ post.category }}</span></div>
+                    </div>
+                    <h3>{{ post.title }}</h3><a
+                        href="{{ post.url }}"
+                        class="button button-outline w-button">Read more</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% include newsletter.html %}
+    </div>
+</section>

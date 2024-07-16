@@ -25,9 +25,8 @@
     <div data-animation="default" data-collapse="none" data-duration="400" data-easing="ease" data-easing2="ease"
         role="banner" class="section header w-nav">
         <div class="container header-container w-container"><a href="/" class="brand w-nav-brand"><img
-                    src="https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/6692d756e4c1a91b1f69f1c0_kkisiele-notion.jpg"
+                    src="/assets/kkisiele.jpg"
                     loading="lazy" width="Auto" sizes="(max-width: 479px) 9vw, 42px" alt=""
-                    srcset="https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/6692d756e4c1a91b1f69f1c0_kkisiele-notion-p-500.jpg 500w, https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/6692d756e4c1a91b1f69f1c0_kkisiele-notion-p-800.jpg 800w, https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/6692d756e4c1a91b1f69f1c0_kkisiele-notion-p-1080.jpg 1080w, https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/6692d756e4c1a91b1f69f1c0_kkisiele-notion.jpg 1135w"
                     class="image" /></a>
             <nav role="navigation" class="nav-menu w-nav-menu"><a href="/blog" aria-current="page"
                     class="nav-link w-nav-link w--current">Blog</a><a href="/#contact"
@@ -37,52 +36,7 @@
             </div>
         </div>
     </div>
-    <section class="section">
-        <div class="w-layout-blockcontainer container w-container">
-            <div class="blog-header">
-                <h1>Blog posts</h1>
-                <div class="text-block-2">The insights about automation, web-app development</div>
-            </div>
-            <div class="w-layout-grid posts">
-                {% for post in site.posts %}
-                <div class="post-card card-outline">
-                    <img
-                        src="https://cdn.prod.website-files.com/6692a29cfa86c68c053066e4/66941b143605b70a9d368107_Automating%20Crypto%20Sentiment%20Alerts%20with%20Make%20(Integromat)-small.jpg"
-                        loading="lazy" alt="" />
-                    <div class="post-card-content">
-                        <div class="blog-post-header">
-                            <div class="text-block">Posted on <span class="post-date">{{ post.date | date: "%B %-d, %Y" }}</span> in <span
-                                    class="tag">{{ post.category }}</span></div>
-                        </div>
-                        <h3>{{ post.title }}</h3><a
-                            href="{{ post.url }}"
-                            class="button button-outline w-button">Read more</a>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="card-outline newletter-card">
-                <div class="newsletter-container">
-                    <h3>Occasional knowledge in your inbox. Subscribe now!</h3>
-                    <div class="newletter-form-block w-form">
-                        <form id="newsletter-form" name="wf-form-Newsletter-Form" data-name="Newsletter Form"
-                            method="get" class="form" data-wf-flow="afae6ba128e343672090efe7"
-                            data-wf-page-id="6692a2e6b9caea629b44d2b5"
-                            data-wf-element-id="412d6150-7444-ea6d-f1f6-f1a08805acca"><input class="text-field w-input"
-                                maxlength="256" name="email" data-name="email" placeholder="Your email" type="email"
-                                id="email-2" required="" /><input type="submit" data-wait="Please wait..."
-                                class="button w-button" value="Submit" /></form>
-                        <div class="success-message w-form-done">
-                            <div>Thank you! Your submission has been received!</div>
-                        </div>
-                        <div class="error-message w-form-fail">
-                            <div>Oops! Something went wrong while submitting the form.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    {{ content }}
     <section class="section footer">
         <div class="w-layout-blockcontainer container w-container">
             <div>© 2024 Karol Kisielewski. All rights reserved.</div>
@@ -96,6 +50,71 @@
     <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt=""
             referrerpolicy="no-referrer-when-downgrade" /></noscript>
+
+    <script type="text/javascript">
+        var makeWebflowFormAjax = function(forms, successCallback, errorCallback) {
+            forms.each(function() {
+                var form = $(this);
+                form.on("submit", function() {
+                    var container = form.parent();
+                    var doneBlock = $(".w-form-done", container);
+                    var failBlock = $(".w-form-fail", container);
+
+                    var action = form.attr("action");
+                    var method = form.attr("method");
+                    var data = form.serialize();
+
+                    // call via ajax
+                    $.ajax({
+                        type: method,
+                        url: action,
+                        data: data,
+                        success: function(resultData) {
+                            if (typeof successCallback === 'function') {
+                                // call custom callback
+                                result = successCallback(resultData);
+                                if (!result) {
+                                    // show error (fail) block
+                                    form.show();
+                                    doneBlock.hide();
+                                    failBlock.show();
+                                    console.log(e);
+
+                                    return;
+                                }
+                            }
+
+                            // show success (done) block
+                            form.hide();
+                            doneBlock.show();
+                            failBlock.hide();
+                        },
+                        error: function(e) {
+                            // call custom callback
+                            if (typeof errorCallback === 'function') {
+                                errorCallback(e);
+                            }
+
+                            // show error (fail) block
+                            form.show();
+                            doneBlock.hide();
+                            failBlock.show();
+                            console.log(e);
+                        }
+                    });
+
+                    // prevent default webdlow action
+                    return false;
+                });
+            });
+        };
+
+        $(document).ready(function() {
+            // Target all forms inside the container that includes newsletter.html
+            var forms = $('form');
+            makeWebflowFormAjax(forms);
+        });
+    </script>
 </body>
 
 </html>
